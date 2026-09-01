@@ -119,24 +119,6 @@ class Heart:
         dy: float = ratio * force * (y - CANVAS_CENTER_Y)
         return x - dx, y - dy
 
-    @staticmethod
-    def calc_position_static(x: int, y: int, ratio: float) -> tuple[float, float]:
-        """
-        calc_position 的静态方法别名。
-
-        提供与实例无关的统一调用接口，确保在静态上下文中也能
-        正确计算跳动坐标。
-
-        Args:
-            x: 原始 x 坐标
-            y: 原始 y 坐标
-            ratio: 力的比例系数，控制跳动幅度
-
-        Returns:
-            跳动偏移后的 (x, y) 浮点坐标元组
-        """
-        return Heart.calc_position(x, y, ratio)
-
     def render(self, render_canvas: Canvas, render_frame: int) -> None:
         """
         在画布上渲染心形图案（单帧）。
@@ -151,12 +133,12 @@ class Heart:
         """
         render_canvas.delete("all")
         for x, y in self.edge_expansion_coordinates:
-            x, y = self.calc_position_static(x, y, BEAT_FORCE_RATIO)
+            x, y = self.calc_position(x, y, BEAT_FORCE_RATIO)
             size: int = random.randint(POINT_SIZE_MIN, POINT_SIZE_MAX)
             render_canvas.create_rectangle(x, y, x + size, y + size, width=0, fill=HEART_COLOR)
         for x, y in self.original_heart_coordinates:
-            x, y = self.calc_position_static(x, y, BEAT_FORCE_RATIO)
-            size = random.randint(POINT_SIZE_MIN, POINT_SIZE_MAX)
+            x, y = self.calc_position(x, y, BEAT_FORCE_RATIO)
+            size: int = random.randint(POINT_SIZE_MIN, POINT_SIZE_MAX)
             render_canvas.create_rectangle(x, y, x + size, y + size, width=0, fill=HEART_COLOR)
 
 
